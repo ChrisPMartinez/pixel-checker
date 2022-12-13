@@ -15,6 +15,7 @@ exports.handler = async (event) => {
     //Put your Pixelfile's filepath within your bucket here. 
     const key = "pixelfile.json"
 
+    //Get the Pixelfile from S3
     const pixelfile = await s3.getObject({
         Bucket: bucket,
         Key: key
@@ -24,6 +25,7 @@ exports.handler = async (event) => {
     
     console.log("payload: " + JSON.stringify(payload));
 
+    //Get the sites from the Pixelfile
     const sites = payload.sites;
 
     let results = [];
@@ -33,7 +35,12 @@ exports.handler = async (event) => {
 
         const scanResult = new ScanResult(site.url);
 
+        //This tells Playwright to go to whatever page on the site
         await page.goto(site.url);
+        
+        //This tells Playwright to get the actual raw HTML from the site
+        //The reason to do it this way is it grabs it after scripts and things have run 
+        //so if someone's using Google Tag Manager or something to inject pixels, we'll actually see if they're there.
         const pageContent = await page.content();
 
         if (pageContent) {
