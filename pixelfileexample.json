@@ -1,0 +1,12 @@
+{
+    "sites":[
+        {
+            "url":"https://clienturl.tld",
+            "pixels": [ "cntrUpTag", "static.hotjar.com"]
+        },
+        {
+            "url":"https://differentclienturl.tld",
+            "pixels": [ "fbq(", "gtag"]
+        }
+    ]    
+}
